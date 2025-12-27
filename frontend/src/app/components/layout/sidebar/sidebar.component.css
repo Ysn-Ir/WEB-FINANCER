@@ -1,0 +1,120 @@
+/* Top Navigation Bar Transformation */
+:host {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px;
+    background: var(--glass-bg);
+    /* Slightly more opaque for readability */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: background-color 0.4s ease;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.05em;
+    min-width: 150px;
+}
+
+.brand span {
+    color: var(--text-primary);
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 4rem;
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 20px;
+    /* Pill shape */
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-left: none;
+    /* Remove side marker */
+}
+
+/* Hover & Active States */
+.nav-item:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.nav-item.active {
+    background: var(--accent-primary);
+    color: #0b0e11;
+    /* Dark text on active yellow */
+    box-shadow: 0 0 15px rgba(240, 185, 11, 0.4);
+    /* Glow effect */
+}
+
+.nav-item i {
+    font-size: 1rem;
+}
+
+/* Footer (Right Side now) */
+.footer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    border-left: 1px solid var(--glass-border);
+    padding-left: 1.5rem;
+}
+
+.theme-toggle {
+    cursor: pointer;
+    background: var(--bg-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.theme-toggle span {
+    display: none;
+    /* Hide text for compactness */
+}
+
+.logout {
+    color: var(--danger);
+    font-size: 0.9rem;
+}
+
+.logout:hover {
+    background: rgba(246, 70, 93, 0.1);
+}

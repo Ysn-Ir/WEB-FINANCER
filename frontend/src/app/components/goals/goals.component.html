@@ -1,0 +1,126 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header">
+        <h1>Goal Tracker</h1>
+        <button class="btn-primary" (click)="toggleAdd()">
+            {{ isAdding ? 'Cancel' : '+ New Goal' }}
+        </button>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div *ngIf="monthlyIncome > 0" class="glass-panel"
+        style="margin-bottom: 2rem; padding: 1.5rem; border-left: 4px solid var(--accent-primary);"
+        [style.border-color]="feasibilityStatus === 'Impossible' ? '#ef4444' : (feasibilityStatus === 'Tight' ? '#f59e0b' : '#10b981')">
+        <h3 style="margin-bottom: 0.5rem;">Financial Health Check</h3>
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <div>
+                <div style="font-size: 0.8rem; color: #aaa;">Avg Monthly Surplus</div>
+                <div style="font-size: 1.2rem; font-weight: bold;">{{ monthlySurplus | currency }}</div>
+            </div>
+            <div>
+                <div style="font-size: 0.8rem; color: #aaa;">Required for Goals</div>
+                <div style="font-size: 1.2rem; font-weight: bold;">{{ totalRequiredMonthly | currency }}/mo</div>
+            </div>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.4;">
+            {{ getSmartRecommendation() }}
+        </p>
+    </div>
+
+    <div *ngIf="isAdding" class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <h3 style="margin-bottom: 1rem;">{{ isEditing ? 'Edit Goal' : 'New Financial Goal' }}</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+            <div>
+                <label>Goal Name</label>
+                <input type="text" [(ngModel)]="newGoal.name" placeholder="e.g. Dream House">
+            </div>
+            <div>
+                <label>Target Amount</label>
+                <input type="number" [(ngModel)]="newGoal.targetAmount" placeholder="0.00">
+            </div>
+            <div>
+                <label>Current Savings</label>
+                <input type="number" [(ngModel)]="newGoal.currentAmount" placeholder="0.00">
+            </div>
+            <div>
+                <label>Deadline</label>
+                <input type="date" [(ngModel)]="newGoal.deadline">
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+                <button class="btn-primary" (click)="saveGoal()" style="width: 100%;">
+                    {{ isEditing ? 'Update Goal' : 'Create Goal' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="goals-grid">
+        @for (goal of goals; track goal.id) {
+        <div class="glass-panel goal-card" style="position: relative;">
+            <div class="goal-header">
+                <div>
+                    <div class="goal-title">{{ goal.name }}</div>
+                    <div class="goal-target">Target: {{ goal.targetAmount | currency }}</div>
+
+                    <div
+                        style="margin-top: 0.5rem;margin-left: 1rem; display: flex; gap: 0.2rem; font-size: 0.6rem;padding-left: 0%;">
+                        <span class="badge">
+                            <i class="fas fa-clock"></i> {{ getDaysRemaining(goal.deadline) }} days left
+                        </span>
+                        <span *ngIf="getRequiredMonthlyContribution(goal) > 0" class="badge badge-success">
+                            Save {{ getRequiredMonthlyContribution(goal) | currency }}/mo
+                        </span>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn-icon-small" (click)="editGoal(goal)" title="Edit">✎</button>
+                        <button class="btn-icon-small delete" (click)="deleteGoal(goal.id)" title="Delete">✕</button>
+                    </div>
+                    <button class="btn-primary" style="font-size: 0.6rem; padding: 0.6rem 0.6rem;"
+                        *ngIf="activeContributionId !== goal.id" (click)="startContribution(goal)">
+                        + Contribute
+                    </button>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" [style.width.%]="calculateProgress(goal)"
+                    [style.background-color]="getProgressColor(calculateProgress(goal))">
+                </div>
+            </div>
+
+            <!-- Contribution Form Overlay -->
+            <div *ngIf="activeContributionId === goal.id" class="contribution-overlay">
+                <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">Add funds to this goal</div>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <input type="number" [(ngModel)]="contributionAmount" placeholder="Amount" style="width: 100px;">
+                    <button class="btn-primary" (click)="submitContribution(goal)">Confirm</button>
+                    <button class="btn-secondary" (click)="cancelContribution()">Cancel</button>
+                </div>
+                <!-- Smart Suggestion -->
+                <div *ngIf="getRequiredMonthlyContribution(goal) > 0"
+                    style="font-size: 0.8rem; color: var(--accent-secondary); cursor: pointer;"
+                    (click)="useRecommendedAmount(goal)">
+                    Use recommended: {{ getRequiredMonthlyContribution(goal) | currency }}
+                </div>
+            </div>
+
+            <div class="goal-stats">
+                <span>
+                    <span class="current-amount">{{ goal.currentAmount | currency }}</span> saved
+                </span>
+                <span [style.color]="getProgressColor(calculateProgress(goal))">
+                    {{ calculateProgress(goal) | number:'1.0-0' }}%
+                </span>
+            </div>
+        </div>
+        } @empty {
+        <div class="glass-panel"
+            style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-secondary);">
+            No active goals. Set a target to start saving.
+        </div>
+        }
+    </div>
+</main>

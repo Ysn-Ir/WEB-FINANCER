@@ -1,0 +1,95 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header">
+        <h1>Asset Vault</h1>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn-primary" (click)="refreshPrices()" style="background: rgba(255,255,255,0.1);">
+                ⟳ Refresh Prices
+            </button>
+            <button class="btn-primary" (click)="toggleAdd()">
+                {{ isAdding ? 'Cancel' : '+ Add Asset' }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div *ngIf="isAdding" class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <h3 style="margin-bottom: 1rem;">{{ isEditing ? 'Edit Asset' : 'New Asset' }}</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+            <div>
+                <label>Symbol</label>
+                <input type="text" [(ngModel)]="newAsset.symbol" placeholder="e.g. BTC, AAPL"
+                    style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white;">
+            </div>
+            <div>
+                <label>Name</label>
+                <input type="text" [(ngModel)]="newAsset.name" placeholder="e.g. Bitcoin"
+                    style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white;">
+            </div>
+            <div>
+                <label>Quantity</label>
+                <input type="number" [(ngModel)]="newAsset.quantity" placeholder="0.00"
+                    style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white;">
+            </div>
+            <div>
+                <label>Avg Cost</label>
+                <input type="number" [(ngModel)]="newAsset.avgCost" placeholder="0.00"
+                    style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white;">
+            </div>
+            <div>
+                <label>Type</label>
+                <select [(ngModel)]="newAsset.type"
+                    style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white;">
+                    <option value="STOCK">Stock</option>
+                    <option value="CRYPTO">Crypto</option>
+                    <option value="REAL_ESTATE">Real Estate</option>
+                </select>
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+                <button class="btn-primary" (click)="saveAsset()" style="width: 100%;">
+                    {{ isEditing ? 'Update Asset' : 'Save Asset' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="assets-grid">
+        @for (asset of assets; track asset.id) {
+        <div class="glass-panel asset-card" style="position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <div>
+                    <div class="asset-symbol">{{ asset.symbol }}</div>
+                    <div class="asset-name">{{ asset.name }}</div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button
+                        style="background: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 8px; cursor: pointer; color: #aaa;"
+                        (click)="editAsset(asset)">✎</button>
+                    <button
+                        style="background: none; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 4px; padding: 4px 8px; cursor: pointer; color: #ff5555;"
+                        (click)="deleteAsset(asset.id)">✕</button>
+                </div>
+            </div>
+
+            <div class="asset-values">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary)">Total Value</div>
+                    <div class="total-value">{{ (asset.quantity * asset.currentPrice) | currency }}</div>
+                </div>
+                <div>
+                    <div class="roi" [class.negative]="calculateROI(asset) < 0">
+                        {{ calculateROI(asset) > 0 ? '+' : '' }}{{ calculateROI(asset) | number:'1.2-2' }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+        } @empty {
+
+        <div class="glass-panel"
+            style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-secondary);">
+            No assets in the vault. Start building your wealth.
+        </div>
+        }
+    </div>
+</main>

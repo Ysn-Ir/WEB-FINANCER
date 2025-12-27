@@ -1,0 +1,32 @@
+<div class="glass-panel login-card">
+    <div class="header">
+        <h2 class="text-gradient">Initialize Protocol</h2>
+        <p>Create your secure identity for the financial system.</p>
+    </div>
+
+    <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" class="input-field" [(ngModel)]="fullname" placeholder="Yassine">
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" class="input-field" [(ngModel)]="username" placeholder="Yassine">
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="input-field" [(ngModel)]="email" placeholder="yassine@gmail.com">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="input-field" [(ngModel)]="password" placeholder="••••••••">
+    </div>
+
+    <button class="btn-primary" (click)="register()">Establish Connection</button>
+
+    <div class="auth-links">
+        Already have an identity? <a routerLink="/login">Access Vault</a>
+    </div>
+</div>

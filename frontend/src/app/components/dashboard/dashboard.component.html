@@ -1,0 +1,100 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header">
+        <h1>Command Center</h1>
+        <div>
+            <button class="btn-secondary" (click)="refreshPrices()" [disabled]="isUpdating" style="margin-right: 1rem;">
+                <i class="fas fa-sync-alt" [class.fa-spin]="isUpdating"></i> Refresh Market
+            </button>
+            <button class="btn-primary" routerLink="/ledger" style="margin-right: 1rem;">+ Transaction</button>
+            <button class="btn-primary" routerLink="/vault" style="margin-right: 1rem;">+ Asset</button>
+            <button class="btn-primary" routerLink="/goals">+ Goal</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <!-- Net Worth Card -->
+        <div class="card">
+            <div class="card-title">Net Worth</div>
+            <div class="card-value">{{ netWorth | currency }}</div>
+            <div class="card-trend trend-up">Start building wealth</div>
+        </div>
+
+        <!-- Cash Flow Card -->
+        <div class="card">
+            <div class="card-title">Total Cash Flow</div>
+            <div class="card-value" [class.trend-up]="monthlyCashFlow >= 0" [class.trend-down]="monthlyCashFlow < 0">
+                {{ monthlyCashFlow > 0 ? '+' : '' }}{{ monthlyCashFlow | currency }}
+            </div>
+            <div class="card-trend" [class.trend-up]="monthlyCashFlow >= 0">
+                {{ monthlyCashFlow >= 0 ? 'Positive' : 'Negative' }} Flow
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="card">
+            <div class="card-title">System Status</div>
+            <div class="card-value" style="font-size: 1.25rem;">
+                <span style="color: var(--accent-success)">● All Systems Nominal</span>
+            </div>
+            <div class="card-trend">Last sync: Just now</div>
+        </div>
+    </div>
+
+    <!-- Charts & Analytics Grid -->
+    <div class="grid" style="margin-top: 2rem; grid-template-columns: repeat(2, 1fr);">
+
+        <!-- Portfolio Allocation -->
+        <div class="card" style="height: 350px;">
+            <div class="card-title">Portfolio Allocation</div>
+            <div style="flex: 1; position: relative;">
+                <canvas baseChart [data]="portfolioChartData" [options]="chartOptions" [type]="'doughnut'">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Cash Flow History -->
+        <div class="card" style="height: 350px;">
+            <div class="card-title">Cash Flow Trend (6mo)</div>
+            <div style="flex: 1; position: relative;">
+                <canvas baseChart [data]="cashFlowChartData" [options]="lineChartOptions" [type]="'line'">
+                </canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card" style="margin-top: 1.5rem; height: auto; min-height: 200px;">
+        <div class="card-title">Recent Activity</div>
+        <div style="overflow-x: auto;">
+            <table class="activity-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (txn of recentTransactions; track txn.id) {
+                    <tr>
+                        <td class="date-col">{{ txn.date | date:'MMM d' }}</td>
+                        <td>{{ txn.description }}</td>
+                        <td class="amount-col" [class.trend-up]="txn.type === 'INCOME'"
+                            [class.trend-down]="txn.type === 'EXPENSE'">
+                            {{ txn.type === 'INCOME' ? '+' : '-' }}{{ txn.amount | currency }}
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-secondary);">No
+                            recent activity</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>

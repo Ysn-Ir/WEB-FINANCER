@@ -1,0 +1,22 @@
+<div class="glass-panel login-card">
+    <div class="header">
+        <h2 class="text-gradient">Welcome Back</h2>
+        <p>Enter your credentials to access your vault.</p>
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" class="input-field" [(ngModel)]="username" placeholder="yassine">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="input-field" [(ngModel)]="password" placeholder="••••••••">
+    </div>
+
+    <button class="btn-primary" (click)="login()">Access Dashboard</button>
+
+    <div class="auth-links">
+        Don't have an account? <a routerLink="/register">Initialize Protocol</a>
+    </div>
+</div>

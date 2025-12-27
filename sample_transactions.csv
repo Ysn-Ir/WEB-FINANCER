@@ -1,0 +1,11 @@
+Date,Description,Amount,Type,Category
+2024-01-05,Monthly Salary,5000.00,INCOME,Salary
+2024-01-07,Grocery WholeFoods,150.50,EXPENSE,Food
+2024-01-10,Netflix Subscription,15.99,EXPENSE,Entertainment
+2024-01-15,Freelance Project X,1200.00,INCOME,Side Hustle
+2024-01-20,Shell Gas Station,45.00,EXPENSE,Transport
+2024-02-01,Rent Payment,1800.00,EXPENSE,Housing
+2024-02-05,Monthly Salary,5000.00,INCOME,Salary
+2024-02-14,Valentine Dinner,200.00,EXPENSE,Entertainment
+2024-03-01,Stock Dividend AAPL,35.20,INCOME,Investment
+2024-03-10,Electric Bill,120.00,EXPENSE,Utilities

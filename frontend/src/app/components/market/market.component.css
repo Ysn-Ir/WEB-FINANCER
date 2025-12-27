@@ -1,0 +1,97 @@
+:host {
+    display: block;
+    /* Removed sidebar margin */
+}
+
+main {
+    padding-top: 100px;
+    /* Space for Top Bar */
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Ticker Results */
+.result-item {
+    padding: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    margin-bottom: 0.25rem;
+    border-left: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.result-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-left-color: var(--text-secondary);
+}
+
+.result-item.active {
+    background: linear-gradient(90deg, rgba(240, 185, 11, 0.1) 0%, transparent 100%);
+    border-left-color: var(--accent-primary);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+}
+
+/* Scrollbar for Results (Targeting the specific container via class if possible, but general override here) */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+/* Light Mode Overrides for Market */
+:host-context(.light-theme) .result-item {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+:host-context(.light-theme) .result-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-left-color: var(--text-secondary);
+}
+
+:host-context(.light-theme) .result-item.active {
+    background: linear-gradient(90deg, rgba(67, 56, 202, 0.1) 0%, transparent 100%);
+    border-left-color: var(--accent-primary);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+:host-context(.light-theme) .badge {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+}
+
+:host-context(.light-theme) ::-webkit-scrollbar-track {
+    background: rgba(203, 213, 225, 0.3);
+}
+
+:host-context(.light-theme) ::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+}

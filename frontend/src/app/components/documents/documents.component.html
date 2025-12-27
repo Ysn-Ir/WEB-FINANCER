@@ -1,0 +1,105 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header"
+        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1>Document Vault</h1>
+            <p class="text-gradient">Securely store your financial records.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="glass-panel" style="padding: 0.5rem; display: flex; gap: 0.5rem; border-radius: 8px;">
+            <button class="btn-tab" [class.active]="activeTab === 'documents'" (click)="setTab('documents')">
+                <i class="fas fa-folder"></i> File Vault
+            </button>
+            <button class="btn-tab" [class.active]="activeTab === 'import'" (click)="setTab('import')">
+                <i class="fas fa-database"></i> Data Import
+            </button>
+        </div>
+    </div>
+
+    <!-- DATA IMPORT SECTION -->
+    <div *ngIf="activeTab === 'import'" class="glass-panel upload-card">
+        <h3>Import Financial Data (CSV)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem;">
+            Bulk import transactions or assets from CSV files.
+        </p>
+
+        <div style="display: flex; gap: 2rem; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap;">
+            <div style="flex: 1; max-width: 300px; text-align: left;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Import Type</label>
+                <select [(ngModel)]="importType"
+                    style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: 4px;">
+                    <option value="transactions">Bank Transactions</option>
+                    <option value="assets">Asset Portfolio</option>
+                </select>
+            </div>
+
+            <div style="flex: 1; max-width: 300px; text-align: left;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">CSV Format</label>
+                <div
+                    style="font-family: 'Roboto Mono', monospace; font-size: 0.8rem; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 4px; border: 1px dashed var(--text-secondary); color: var(--text-tertiary);">
+                    <span *ngIf="importType === 'transactions'">Date, Description, Amount, Type, Category</span>
+                    <span *ngIf="importType === 'assets'">Symbol, Name, Type, Quantity, AvgCost</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-area">
+            <input type="file" (change)="selectFile($event)" accept=".csv" />
+            <button class="btn-primary" [disabled]="!selectedFiles" (click)="importData()">
+                <i class="fas fa-file-import"></i> Process Import
+            </button>
+        </div>
+
+        <div *ngIf="importMessage" class="alert"
+            style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; text-align: center;">
+            {{ importMessage }}
+        </div>
+    </div>
+
+    <!-- DOCUMENT UPLOAD SECTION -->
+    <div *ngIf="activeTab === 'documents'" class="glass-panel upload-card">
+        <h3>Upload New Document</h3>
+        <div class="upload-area">
+            <input type="file" (change)="selectFile($event)" />
+            <button class="btn-primary" [disabled]="!selectedFiles" (click)="upload()">
+                <i class="fas fa-cloud-upload-alt"></i> Upload to Vault
+            </button>
+        </div>
+
+        <div *ngIf="currentFile" class="progress-bar-container">
+            <div class="progress-bar" [style.width]="progress + '%'">{{ progress }}%</div>
+        </div>
+        <div *ngIf="message" class="alert" style="margin-top: 1rem;">
+            {{ message }}
+        </div>
+    </div>
+
+    <!-- File List -->
+    <div class="files-grid" *ngIf="activeTab === 'documents'">
+        <div class="file-card" *ngFor="let file of fileInfos">
+            <div class="file-icon">
+                <i class="fas fa-file-pdf" *ngIf="file.type.includes('pdf')"></i>
+                <i class="fas fa-file-image" *ngIf="file.type.includes('image')"></i>
+                <i class="fas fa-file" *ngIf="!file.type.includes('pdf') && !file.type.includes('image')"></i>
+            </div>
+            <div class="file-info">
+                <div class="file-name" title="{{ file.name }}">{{ file.name }}</div>
+                <div class="file-meta">{{ file.size / 1024 | number:'1.0-0' }} KB</div>
+            </div>
+            <div class="actions" style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem;">
+                <button class="btn-icon" (click)="viewFile(file.url)" title="View" style="color: #6366f1;">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <a [href]="file.url" class="btn-icon" download title="Download" style="text-decoration: none;">
+                    <i class="fas fa-download"></i> Save
+                </a>
+                <button class="btn-icon delete" (click)="deleteFile(file.id)" title="Delete" style="color: #ff4d4d;">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</main>

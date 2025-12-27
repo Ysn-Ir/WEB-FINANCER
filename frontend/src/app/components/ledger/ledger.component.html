@@ -1,0 +1,90 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header">
+        <h1>Universal Ledger</h1>
+        <button class="btn-primary" (click)="toggleAdd()">
+            {{ isAdding ? 'Cancel' : '+ Add Transaction' }}
+        </button>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div *ngIf="isAdding" class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <h3 style="margin-bottom: 1rem;">{{ isEditing ? 'Edit Transaction' : 'New Transaction' }}</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" [(ngModel)]="newTxn.description" placeholder="e.g. Grocery">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" [(ngModel)]="newTxn.amount" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select [(ngModel)]="newTxn.type">
+                    <option value="EXPENSE">Expense</option>
+                    <option value="INCOME">Income</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" [(ngModel)]="newTxn.category" placeholder="e.g. Food">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" [(ngModel)]="newTxn.date">
+            </div>
+            <div class="form-group" style="display: flex; align-items: flex-end;">
+                <button class="btn-primary" (click)="saveTransaction()" style="width: 100%;">
+                    {{ isEditing ? 'Update Transaction' : 'Save Transaction' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Account</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (txn of transactions; track txn.id) {
+                <tr>
+                    <td style="color: var(--text-secondary)">{{ txn.date | date:'MMM d, y' }}</td>
+                    <td>{{ txn.description || 'No description' }}</td>
+                    <td><span class="badge">{{ txn.category }}</span></td>
+                    <td>{{ txn.account?.name || 'Main Account' }}</td>
+                    <td class="amount" [class.income]="txn.type === 'INCOME'" [class.expense]="txn.type === 'EXPENSE'">
+                        {{ txn.type === 'INCOME' ? '+' : '-' }}{{ txn.amount | currency }}
+                    </td>
+                    <td>
+                        <button
+                            style="background: none; border: none; cursor: pointer; color: #aaa; margin-right: 0.5rem;"
+                            (click)="editTransaction(txn)">
+                            ✎
+                        </button>
+                        <button style="background: none; border: none; cursor: pointer; color: #ff5555;"
+                            (click)="deleteTransaction(txn.id)">
+                            🗑
+                        </button>
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        No transactions found. Start by adding one.
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>

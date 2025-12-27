@@ -1,0 +1,101 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header" style="margin-left:1rem">
+        <h1>Market Data</h1>
+    </div>
+
+    <!-- Search Section -->
+    <div class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="search()"
+                placeholder="Search assets (e.g. BTC, Apple)...">
+
+            <!-- Search Filters -->
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn-filter" [class.active]="searchFilter === 'ALL'"
+                    (click)="setSearchFilter('ALL')">All</button>
+                <button class="btn-filter" [class.active]="searchFilter === 'CRYPTO'"
+                    (click)="setSearchFilter('CRYPTO')">Crypto</button>
+                <button class="btn-filter" [class.active]="searchFilter === 'STOCK'"
+                    (click)="setSearchFilter('STOCK')">Stocks</button>
+            </div>
+
+            <button class="btn-primary" (click)="search()">Search</button>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+
+        <!-- Results List -->
+        <div class="glass-panel" style="max-height: 600px; overflow-y: auto; ">
+            <h3
+                style="margin: 1rem; border-bottom: 1px solid var(--glass-border); margin-left:1rem; padding-bottom: 0.5rem;">
+                Results</h3>
+
+            <div *ngIf="loading && !searchResults.length"
+                style="padding: 1rem; margin-left: 1rem; color: var(--text-secondary);">
+                Loading...</div>
+
+            @for (asset of searchResults; track asset.symbol) {
+            <div class="result-item" (click)="selectAsset(asset)"
+                [class.active]="selectedAsset?.symbol === asset.symbol">
+                <div style="font-weight: bold; color: var(--accent-primary);">{{ asset.symbol }}</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">{{ asset.name }}</div>
+                <div class="badge" style="margin-top: 0.5rem; font-size: 0.7rem;">{{ asset.type }}</div>
+            </div>
+            } @empty {
+            <div style="padding: 1rem; color: var(--text-secondary);">No results found.</div>
+            }
+        </div>
+
+        <!-- Detail View -->
+        <div class="glass-panel">
+            <div *ngIf="selectedAsset; else noAssetSelected">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                    <div>
+                        <h2 style="font-size: 2.5rem; margin: 0; margin-left: 8rem; color: var(--text-primary);">
+                            {{ selectedAsset.name }}
+                        </h2>
+                        <span
+                            style="color: var(--accent-primary); font-size: 1.2rem; margin-left: 8.2rem; font-weight: 500; letter-spacing: 1px;">
+                            {{ selectedAsset.symbol }}
+                        </span>
+                    </div>
+                    <div style="text-align: right;">
+                        <!-- Time Period Filters -->
+                        <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+                            <button class="btn-sm" [class.active]="timePeriod === '1H'"
+                                (click)="setTimePeriod('1H')">1H</button>
+                            <button class="btn-sm" [class.active]="timePeriod === '1D'"
+                                (click)="setTimePeriod('1D')">1D</button>
+                            <button class="btn-sm" [class.active]="timePeriod === '7D'"
+                                (click)="setTimePeriod('7D')">7D</button>
+                        </div>
+
+                        <div
+                            style="font-size: 3rem; font-weight: 700; color: var(--text-primary); margin-right: 5rem; letter-spacing: -1px; text-shadow: 0 0 20px rgba(99, 102, 241, 0.2);">
+                            {{ currentPrice | currency }}
+                        </div>
+                        <div
+                            style="color: var(--text-secondary); font-size: 0.9rem; margin-right: 5rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Live Market Price</div>
+                    </div>
+                </div>
+
+                <div style="height: 450px; position: relative;">
+                    <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType">
+                    </canvas>
+                </div>
+            </div>
+
+            <ng-template #noAssetSelected>
+                <div
+                    style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #666;">
+                    <h2>Select an asset to view details</h2>
+                    <p>Search via symbol or name to get started.</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</main>

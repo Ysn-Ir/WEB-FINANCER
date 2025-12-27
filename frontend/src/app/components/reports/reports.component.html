@@ -1,0 +1,48 @@
+<app-sidebar></app-sidebar>
+
+<main>
+    <div class="header">
+        <h1>Analytics Engine</h1>
+        <p class="text-gradient" style="font-size: 0.875rem;">Deep dive into your financial data.</p>
+    </div>
+
+    <div class="summary-stats">
+        <div class="stat-item">
+            <span class="stat-label">Total Income (YTD)</span>
+            <span class="stat-val">{{ totalIncome | currency }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Expenses (YTD)</span>
+            <span class="stat-val">{{ totalExpenses | currency }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Savings Rate</span>
+            <span class="stat-val" [style.color]="savingsRate > 20 ? 'var(--accent-success)' : 'var(--text-secondary)'">
+                {{ savingsRate | number:'1.1-1' }}%
+            </span>
+        </div>
+    </div>
+
+    <div class="grid"
+        style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+
+        <!-- Income vs Expense Bar Chart -->
+        <div class="card" style="min-height: 350px;">
+            <div class="chart-title">Income vs Expenses (6 Months)</div>
+            <div style="flex: 1; position: relative; height: 300px;">
+                <canvas baseChart [data]="barChartData" [options]="barChartOptions" type="bar">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Category Breakdown Pie Chart -->
+        <div class="card" style="min-height: 350px;">
+            <div class="chart-title">Top Expense Categories</div>
+            <div style="flex: 1; position: relative; height: 300px;">
+                <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" type="doughnut">
+                </canvas>
+            </div>
+        </div>
+
+    </div>
+</main>

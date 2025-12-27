@@ -1,0 +1,69 @@
+:host {
+    display: block;
+    /* Removed sidebar margin */
+}
+
+main {
+    padding-top: 100px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.assets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.asset-card {
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.asset-symbol {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.asset-name {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+.asset-values {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.total-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.roi {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent-success);
+}
+
+.roi.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--accent-danger);
+}

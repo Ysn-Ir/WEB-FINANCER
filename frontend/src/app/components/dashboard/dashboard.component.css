@@ -1,0 +1,349 @@
+/* Main Content Area */
+main {
+    padding-top: 100px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    /* Increased Margin */
+    background: var(--glass-bg);
+    padding: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--accent-primary);
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+    gap: 1rem;
+}
+
+.header>div {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.header button {
+    white-space: nowrap;
+    /* Prevent text overlap */
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'Roboto Mono', monospace;
+    /* Tech Font */
+}
+
+/* Grids - Dashboard Widget Style */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Strict 3 columns on large screens */
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- NEW CARD DESIGN: HUD Tech --- */
+.card {
+    /* Remove general glass panel bg if it conflicts, or override it */
+    background: rgba(20, 20, 25, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    /* Strict sharp corners */
+    position: relative;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 160px;
+    /* Cut corners effect */
+    clip-path: polygon(0 0,
+            100% 0,
+            100% calc(100% - 20px),
+            calc(100% - 20px) 100%,
+            0 100%);
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect: Glow & Lift */
+.card:hover {
+    background: rgba(20, 20, 25, 0.7);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 20px rgba(240, 185, 11, 0.15);
+    /* Yellow glow */
+    transform: translateY(-5px);
+}
+
+/* Decorative Corner Line */
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-primary);
+    /* This fills the cut corner area visually or acts as accent */
+    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+    opacity: 0.8;
+}
+
+/* Top accent bar */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-primary), transparent);
+    opacity: 0.5;
+}
+
+.card-title {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Optional icon in title */
+.card-title i {
+    opacity: 0.5;
+}
+
+.card-value {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    /* Ensure padding for chart */
+}
+
+.chart-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', monospace;
+    pointer-events: none;
+    /* Allow interaction with chart underneath */
+}
+
+.chart-overlay .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+}
+
+.chart-overlay .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    display: block;
+}
+
+.card-trend {
+    font-size: 0.8rem;
+    font-family: 'Roboto Mono', monospace;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.trend-up {
+    color: var(--accent-success);
+    text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.trend-down {
+    color: var(--accent-danger);
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.trend-neutral {
+    color: var(--accent-primary);
+}
+
+/* Light Theme Overrides for Dashboard */
+:host-context(.light-theme) .card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+:host-context(.light-theme) .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+:host-context(.light-theme) .card-title {
+    color: var(--text-secondary);
+}
+
+:host-context(.light-theme) .card-value {
+    color: #020617;
+    /* Pitch black for max contrast */
+    text-shadow: none;
+    font-weight: 800;
+    /* Extra bold */
+}
+
+:host-context(.light-theme) .card-trend {
+    text-shadow: none;
+    font-weight: 600;
+}
+
+:host-context(.light-theme) .trend-up {
+    color: #059669;
+    /* Darker green */
+    text-shadow: none;
+}
+
+:host-context(.light-theme) .trend-down {
+    color: #dc2626;
+    /* Darker red */
+    text-shadow: none;
+}
+
+:host-context(.light-theme) .header {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--glass-border);
+}
+
+:host-context(.light-theme) .header button {
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+:host-context(.light-theme) .header button:hover {
+    background: #f1f5f9;
+    color: var(--accent-primary);
+}
+
+:host-context(.light-theme) table tr {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+:host-context(.light-theme) table th {
+    color: #334155;
+    /* Darker slate */
+    border-bottom: 1px solid var(--glass-border);
+    font-weight: 700;
+}
+
+/* Activity Table Styles */
+.activity-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.activity-table th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 0.75rem;
+    font-weight: 600;
+}
+
+.activity-table td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem;
+    color: var(--text-primary);
+}
+
+.activity-table .date-col {
+    color: var(--text-secondary);
+}
+
+.activity-table .amount-col {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+}
+
+/* Light Theme Overrides for Table - STYLE & CONTRAST */
+:host-context(.light-theme) .activity-table th {
+    border-bottom: 2px solid #cbd5e1;
+    color: #1e293b;
+    /* Dark Slate Blue - professional black substitute */
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 1rem;
+}
+
+:host-context(.light-theme) .activity-table td {
+    border-bottom: 1px solid #e2e8f0;
+    color: #020617;
+    /* Pitch Black */
+    font-weight: 600;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: background-color 0.2s ease, color 0.1s ease;
+}
+
+/* Styled Row Hover */
+:host-context(.light-theme) .activity-table tr:hover td {
+    background-color: #f1f5f9;
+    /* Slate 100 */
+    color: #2563eb;
+    /* Blue 600 text on hover for style */
+    cursor: default;
+}
+
+:host-context(.light-theme) .activity-table tr:hover .date-col {
+    color: #2563eb;
+}
+
+:host-context(.light-theme) .activity-table .date-col {
+    color: #475569;
+    /* Slate 600 */
+    font-weight: 700;
+}
