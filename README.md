@@ -8,18 +8,18 @@
 
 ---
 
-## 🏗️ Architecture & Engineering
+##  Architecture & Engineering
 
 The application follows a strict **Layered Monolithic** architecture designed for modularity and scalability.
 
-### Backend (Spring Boot Core)
+### Backend (Spring Boot )
 The server-side logic handles complex calculations, data persistence, and external API integrations.
 *   **Controller Layer**: RESTful endpoints defining the API contract. Handles HTTP requests/responses and standardizes JSON output.
 *   **Service Layer**: The brain of the application. Contains business logic for forecasting, market data merging, and transaction categorization.
 *   **Repository Layer**: Abstraction over the data store using `Spring Data JPA`. Allows for seamless switching between SQL databases.
 *   **DTO Pattern**: Data Transfer Objects are used to decouple internal entities from the external API surface.
 
-### Frontend (Angular SPA)
+### Frontend (Angular )
 A Single Page Application designed for speed and interactivity.
 *   **Component-Based**: Over 20+ reusable UI components (Charts, Cards, Tables, Modals).
 *   **Reactive Services**: Uses `RxJS` Observables to create a real-time feel. For example, updating a transaction in the Ledger instantly recalculates Net Worth in the Sidebar without a page reload.
@@ -27,7 +27,7 @@ A Single Page Application designed for speed and interactivity.
 
 ---
 
-## 🛠 Tech Stack Deep Dive
+## 🛠Tech Stack Deep Dive
 
 | Component | Technology | Context |
 | :--- | :--- | :--- |
@@ -43,9 +43,9 @@ A Single Page Application designed for speed and interactivity.
 
 ---
 
-## 🌟 Comprehensive Feature List
+##  Comprehensive Feature List
 
-### 1. 🏰 Command Center (Dashboard)
+### 1.  Command Center (Dashboard)
 The mission control screen aggregating data from all subsystems.
 *   **HUD Design**: "Heads Up Display" cards showing vital stats (Net worth, cash flow).
 *   **Dynamic Theming**: Cards adapt to Light/Dark modes, changing opacity, borders, and shadows instantly.
@@ -53,17 +53,17 @@ The mission control screen aggregating data from all subsystems.
     *   *Portfolio Allocation*: A Doughnut chart visualizing asset distribution (Crypto vs. stocks vs. Cash).
     *   *Cash Flow Trend*: A 6-month historical line chart smoothing out monthly spending spikes.
 
-### 2. 📒 Universal Ledger (Transaction Management)
+### 2.  Universal Ledger (Transaction Management)
 *   **CRUD Operations**: Create, Read, Update, Delete transactions.
 *   **Smart Type Detection**: Automatically categorizes entries as `INCOME`, `EXPENSE`, or `INVESTMENT`.
 *   **Persistency**: Data survives restarts (via H2 file-based storage or MySQL).
 
-### 3. 💎 Asset Vault
+### 3.  Asset Vault
 Tracks the user's tangible and intangible assets.
 *   **Asset Classes**: Supports Real Estate, Vehicles, Stock Holdings, and Cash accounts.
 *   **Valuation Engine**: Automatically sums asset values to contribute to the global Net Worth calculation.
 
-### 4. 🧠 Forecasting Engine (Simulation)
+### 4.  Forecasting Engine (Simulation)
 A Monte Carlo-lite simulation tool.
 *   **Inputs**: Current Net Worth, Monthly Contribution, Annual Return Rate (APR), Inflation Rate, Time Horizon (Years).
 *   **Outputs**:
@@ -71,22 +71,22 @@ A Monte Carlo-lite simulation tool.
     *   *Real Value*: Inflation-adjusted purchasing power.
     *   *Total Contributed*: How much principal was added vs. compound interest earned.
 
-### 5. 📉 Market Terminal
+### 5.  Market Terminal
 *   **Price History**: Fetches intraday and historical price data for tracking market trends.
 *   **Search Algorithm**: Custom ticker search functionality.
 *   **Color-Coded Canvas**: Charts turn <span style="color:green">Green</span> (Bullish) or <span style="color:red">Red</span> (Bearish) based on trend direction.
 
-### 6. 🏆 Goal Tracker
+### 6.  Goal Tracker
 *   **Gamified Savings**: Visual progress bars fill up as you contribute to goals.
 *   **Deadline Logic**: Calculates "Days Left" and "Required Daily Saving" to meet targets on time.
 
-### 7. 📂 Document Repository
+### 7.  Document Repository
 *   **Binary Storage**: Uploads PDF/Images directly to the server.
 *   **Metadata Indexing**: Search documents by filename or upload date.
 
 ---
 
-## 📡 API Reference endpoints
+##  API Reference endpoints
 
 The backend exposes a comprehensive REST API. Here are the core endpoints:
 
@@ -109,24 +109,24 @@ The backend exposes a comprehensive REST API. Here are the core endpoints:
 
 ---
 
-## 🎨 UI Design System
+##  UI Design System
 
 We utilize a custom-built CSS Variable system (`:root`) to handle theming without external libraries like Tailwind or Bootstrap, ensuring a unique identity.
 
-### 🌑 Design Noir (Dark Mode)
+###  Design Noir (Dark Mode)
 *   **Background**: Deep Space Gradient (`radial-gradient(#1f1f26, #0a0a0c)`).
 *   **Surfaces**: Glassmorphism (`rgba(20, 20, 25, 0.7)`).
 *   **Accents**: Neon Amber (`#f0b504`) and Cyber Red (`#e11b1b`).
 *   **Typography**: Inter (UI) and Roboto Mono (Data).
 
-### ☀️ High Contrast (Light Mode)
+###  High Contrast (Light Mode)
 *   **Background**: Clean Slate (`#f8fafc`).
 *   **Text**: Pitch Black & Slate 900 for maximum readability.
 *   **Borders**: Solid Slate borders replacing glows for a crisper "Print-Ready" look.
 
 ---
 
-## ⚙️ Setup & Installation Guide
+##  Setup & Installation Guide
 
 ### 1. Database Configuration
 By default, the app uses an in-memory/file-based H2 database for ease of use.
@@ -152,13 +152,13 @@ ng serve --open
 
 ---
 
-## 🔒 Security
+##  Security
 *   **CORS**: Configured to allow requests strictly from `http://localhost:4200` (Angular default).
 *   **Validation**: Backend `@Valid` annotations ensure data integrity (e.g., preventing negative transaction amounts).
 
 ---
 
-## 🗺️ Roadmap
+##  Roadmap
 *   [ ] **JWT Authentication**: Full-scale login/signup with token rotation.
 *   [ ] **Plaid Integration**: Automatic bank account syncing.
 *   [ ] **Docker Support**: Containerization for easy cloud deployment.
